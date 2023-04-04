@@ -98,26 +98,28 @@ const loadAllData = (params: any) => {
 };
 
 /**
- * 加载单类数据
+ * 加载数据
  * @param params
  */
 const loadData = (params: any) => {
-  const { type = "post" } = params;
-  if (!type) {
-    message.error("类别为空");
-    return;
-  }
+  const { type } = params;
   const query = {
     ...params,
     searchText: params.text,
   };
   myAxios.post("search/all", query).then((res: any) => {
-    if (type === "post") {
-      postList.value = res.objectPage.records;
-    } else if (type === "user") {
-      userList.value = res.objectPage.records;
-    } else if (type === "picture") {
-      pictureList.value = res.objectPage.records;
+    if (!type) {
+      postList.value = res.postVoPage.records;
+      userList.value = res.userVoPage.records;
+      pictureList.value = res.picturePage.records;
+    } else {
+      if (type === "post") {
+        postList.value = res.objectPage.records;
+      } else if (type === "user") {
+        userList.value = res.objectPage.records;
+      } else if (type === "picture") {
+        pictureList.value = res.objectPage.records;
+      }
     }
   });
 };
